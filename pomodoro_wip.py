@@ -8,22 +8,24 @@ from tkinter import messagebox
 # functions
 def count(timer):
     m, s = divmod(timer, 60)
+    global m
+    global s
     time_label.configure(text='{:02d}:{:02d}'.format(m, s))
     cnt_label.configure(text='Session: {}'.format(counter))
-    if timer == 0:
-        time_label.configure(text='TIME IS UP!!')
-        alert()
-        return 0
-    root.after(1000, count, timer - 1)
+    job = root.after(1000, count, timer - 1)
+    global job
 
 
 def alert():
-    messagebox.askquestion("Work Session Terminated", "Click here to rest")
+    messagebox.askquestion("Time is Up!", "Start Break?")
 
 
 def stop_count():
-    # TODO
-    return 0
+    root.after_cancel(job)
+    time_label.configure(text='{:02d}:{:02d}'.format(0, 0))
+    counter = 0
+    global counter
+    cnt_label.configure(text='Session: {}'.format(0))
 
 
 def pause_count():
@@ -31,10 +33,33 @@ def pause_count():
     return 0
 
 
+def start():
+    global session
+    global short_break
+    global counter
+    global long_break
+    global test
+
+    counter += 1
+    count(test)
+    if counter % 4 == 0:
+        if m == 0 and s == 0:
+            res = alert()
+            if res == "yes":
+                count(long_break)
+            else:
+                stop_count()
+    else:
+        if m == 0 and s == 0:
+            res = alert()
+            if res == "yes":
+                count(short_break)
+            else:
+                stop_count()
+
 # root & title
 root = tk.Tk()
-root.geometry('{}x{}'.format(200, 50))
-root.title('Pomodoro Timer')
+root.title('Pomodoro')
 
 # main label area
 main_label = tk.Frame(root)
@@ -61,12 +86,12 @@ test = 2
 counter = 0
 
 # buttons
-start_button = tk.Button(main_label, text="Start", command=lambda: count(test))
+start_button = tk.Button(main_label, text="Start", command=lambda: start())
 start_button.grid(row=2, column=1)
-stop_button = tk.Button(main_label, text="Stop", command=lambda: stop_count)
-stop_button.grid(row=2, column=2)
-pause_button = tk.Button(main_label, text="Pause", command=lambda: pause_count)
-pause_button.grid(row=2, column=3)
+pause_button = tk.Button(main_label, text="Pause", command=lambda: pause_count())
+pause_button.grid(row=2, column=2)
+stop_button = tk.Button(main_label, text="Stop", command=lambda: stop_count())
+stop_button.grid(row=2, column=3)
 
 # mainloop
 root.mainloop()
