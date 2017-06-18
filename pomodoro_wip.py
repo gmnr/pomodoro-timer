@@ -5,44 +5,48 @@ import tkinter as tk
 from tkinter import messagebox
 
 
-# functions
+# ~Functions~
+# basic countdown function
 def count(timer):
     m, s = divmod(timer, 60)
     global m
     global s
     time_label.configure(text='{:02d}:{:02d}'.format(m, s))
-    cnt_label.configure(text='Session: {}'.format(counter))
+    cnt_label.configure(text='Session: {}'.format(sess_counter))
     job = root.after(1000, count, timer - 1)
     global job
 
 
+# activates the prompt messagebox (TODO change message if break or not)
 def alert():
     messagebox.askquestion("Time is Up!", "Start Break?")
 
 
+# stops the countdown and resets the counter
 def stop_count():
     root.after_cancel(job)
     time_label.configure(text='{:02d}:{:02d}'.format(0, 0))
-    counter = 0
-    global counter
+    sess_counter = 0
+    global sess_counter
     cnt_label.configure(text='Session: {}'.format(0))
 
 
+# pauses the counter
 def pause_count():
-    # TODO
-    return 0
+    root.after_cancel(job)
 
 
+# starts counting loop
 def start():
     global session
     global short_break
-    global counter
+    global sess_counter
     global long_break
     global test
 
-    counter += 1
+    sess_counter += 1
     count(test)
-    if counter % 4 == 0:
+    if sess_counter % 4 == 0:
         if m == 0 and s == 0:
             res = alert()
             if res == "yes":
@@ -57,10 +61,12 @@ def start():
             else:
                 stop_count()
 
+
 # root & title
 root = tk.Tk()
 root.title('Pomodoro')
 
+# ~Labels~
 # main label area
 main_label = tk.Frame(root)
 main_label.grid(row=2, column=3, columnspan=1)
@@ -68,7 +74,6 @@ main_label.grid(row=2, column=3, columnspan=1)
 # time label
 time_label = tk.Label(main_label, text='00:00')
 time_label.grid(row=1, column=1, columnspan=1)
-
 # placehodler label
 placeholder_label = tk.Label(main_label, text=' ~ ')
 placeholder_label.grid(row=1, column=2)
@@ -76,22 +81,23 @@ placeholder_label.grid(row=1, column=2)
 cnt_label = tk.Label(main_label, text='Session: 0')
 cnt_label.grid(row=1, column=3, columnspan=1)
 
-# define periods
+# ~Variables definition~
+# define sessions
 short_break = 5 * 60
 long_break = 20 * 60
 session = 25 * 60
 test = 2
 
-# counter
-counter = 0
+# session counter
+sess_counter = 0
 
-# buttons
-start_button = tk.Button(main_label, text="Start", command=lambda: start())
-start_button.grid(row=2, column=1)
-pause_button = tk.Button(main_label, text="Pause", command=lambda: pause_count())
-pause_button.grid(row=2, column=2)
-stop_button = tk.Button(main_label, text="Stop", command=lambda: stop_count())
-stop_button.grid(row=2, column=3)
+# ~Buttons~
+start_btn = tk.Button(main_label, text="Start", command=lambda: start())
+start_btn.grid(row=2, column=1)
+pause_btn = tk.Button(main_label, text="Pause", command=lambda: pause_count())
+pause_btn.grid(row=2, column=2)
+stop_btn = tk.Button(main_label, text="Stop", command=lambda: stop_count())
+stop_btn.grid(row=2, column=3)
 
-# mainloop
+# ~MainLoop~
 root.mainloop()
