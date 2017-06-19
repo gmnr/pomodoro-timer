@@ -29,11 +29,13 @@ def stop_count():
     sess_counter = 0
     global sess_counter
     cnt_label.configure(text='Session: {}'.format(0))
+    start_btn.configure(text="Start", command=lambda: start())
 
 
 # pauses the counter
 def pause_count():
     root.after_cancel(job)
+    start_btn.configure(text="Cont.", command=tk.DISABLED)
 
 
 # starts counting loop
@@ -45,6 +47,7 @@ def start():
     global test
 
     sess_counter += 1
+    start_btn.configure(command=tk.DISABLED)
     count(test)
     if sess_counter % 4 == 0:
         if m == 0 and s == 0:
