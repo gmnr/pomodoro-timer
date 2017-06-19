@@ -8,12 +8,13 @@ from tkinter import messagebox
 # ~Functions~
 # basic countdown function
 def count(timer):
+    global finish
     m, s = divmod(timer, 60)
-    global m
-    global s
     time_label.configure(text='{:02d}:{:02d}'.format(m, s))
     cnt_label.configure(text='Session: {}'.format(sess_counter))
     job = root.after(1000, count, timer - 1)
+    if timer == 0:
+        finish = True
     global job
 
 
@@ -49,30 +50,32 @@ def start():
     sess_counter += 1
     start_btn.configure(command=tk.DISABLED)
     count(test)
-    if sess_counter % 4 == 0:
-        if m == 0 and s == 0:
-            res = alert()
-            if res == "yes":
-                count(long_break)
-            else:
-                stop_count()
-    else:
-        if m == 0 and s == 0:
-            res = alert()
-            if res == "yes":
-                count(short_break)
-            else:
-                stop_count()
+    if sess_counter % 4 == 0 and finish:
+        res = alert()
+        if res == "yes":
+            count(long_break)
+        else:
+            stop_count()
+    elif sess_counter % 4 != 0 and finish:
+        res = alert()
+        if res == "yes":
+            count(short_break)
+        else:
+            stop_count()
 
 
 # root & title
 root = tk.Tk()
 root.title('Pomodoro')
+root.geometry('200x60')
 
 # ~Labels~
 # main label area
 main_label = tk.Frame(root)
-main_label.grid(row=2, column=3, columnspan=1)
+main_label.grid(row=2, column=3)
+main_label.columnconfigure(1, weight=1)
+main_label.columnconfigure(2, weight=1)
+main_label.columnconfigure(3, weight=1)
 
 # time label
 time_label = tk.Label(main_label, text='00:00')
@@ -90,6 +93,9 @@ short_break = 5 * 60
 long_break = 20 * 60
 session = 25 * 60
 test = 2
+
+# status change
+finish = False
 
 # session counter
 sess_counter = 0
