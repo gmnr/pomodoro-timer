@@ -11,7 +11,7 @@ def count(timer):
     global finish
     m, s = divmod(timer, 60)
     time_label.configure(text='{:02d}:{:02d}'.format(m, s))
-    cnt_label.configure(text='Session: {}'.format(sess_counter))
+    cnt_label.configure(text='Streak: {}'.format(sess_counter))
     job = root.after(1000, count, timer - 1)
     if timer == 0:
         finish = True
@@ -29,7 +29,7 @@ def stop_count():
     time_label.configure(text='{:02d}:{:02d}'.format(0, 0))
     sess_counter = 0
     global sess_counter
-    cnt_label.configure(text='Session: {}'.format(0))
+    cnt_label.configure(text='Streak: {}'.format(0))
     start_btn.configure(text="Start", command=lambda: start())
 
 
@@ -72,10 +72,17 @@ root.geometry('200x60')
 # ~Labels~
 # main label area
 main_label = tk.Frame(root)
-main_label.grid(row=2, column=3)
-main_label.columnconfigure(1, weight=1)
-main_label.columnconfigure(2, weight=1)
-main_label.columnconfigure(3, weight=1)
+main_label.grid(row=2, column=3, sticky='nesw')
+
+# column padding in window
+root.grid_columnconfigure(1, weight=1)
+root.grid_columnconfigure(2, weight=1)
+root.grid_columnconfigure(3, weight=1)
+
+
+# row padding in window
+root.grid_rowconfigure(1, weight=1)
+root.grid_rowconfigure(2, weight=1)
 
 # time label
 time_label = tk.Label(main_label, text='00:00')
@@ -84,7 +91,7 @@ time_label.grid(row=1, column=1, columnspan=1)
 placeholder_label = tk.Label(main_label, text=' ~ ')
 placeholder_label.grid(row=1, column=2)
 # counter label
-cnt_label = tk.Label(main_label, text='Session: 0')
+cnt_label = tk.Label(main_label, text='Streak: 0')
 cnt_label.grid(row=1, column=3, columnspan=1)
 
 # ~Variables definition~
