@@ -9,13 +9,16 @@ from tkinter import messagebox
 # basic countdown function
 def count(timer):
     global finish
+    global job
+
+    if timer <= -1:
+        finish = True
+        return
+
     m, s = divmod(timer, 60)
     time_label.configure(text='{:02d}:{:02d}'.format(m, s))
     cnt_label.configure(text='Streak: {}'.format(sess_counter))
     job = root.after(1000, count, timer - 1)
-    if timer == 0:
-        finish = True
-    global job
 
 
 # activates the prompt messagebox (TODO change message if break or not)
@@ -25,10 +28,11 @@ def alert():
 
 # stops the countdown and resets the counter
 def stop_count():
+    global sess_counter
+
     root.after_cancel(job)
     time_label.configure(text='{:02d}:{:02d}'.format(0, 0))
     sess_counter = 0
-    global sess_counter
     cnt_label.configure(text='Streak: {}'.format(0))
     start_btn.configure(text="Start", command=lambda: start())
 
@@ -46,6 +50,7 @@ def start():
     global sess_counter
     global long_break
     global test
+    global finish
 
     sess_counter += 1
     start_btn.configure(command=tk.DISABLED)
@@ -62,7 +67,6 @@ def start():
             count(short_break)
         else:
             stop_count()
-
 
 # root & title
 root = tk.Tk()
