@@ -21,9 +21,12 @@ def count(timer):
     job = root.after(1000, count, timer - 1)
 
 
-# activates the prompt messagebox (TODO change message if break or not)
+# activates the prompt messagebox
 def alert():
-    messagebox.askquestion("Time is Up!", "Start Break?")
+    if sess_counter % 4 == 0:
+        messagebox.askquestion("Break Done!!", "Ready for a new session")
+    else:
+        messagebox.askquestion("Time is Up!", "Start Break?")
 
 
 # stops the countdown and resets the counter
@@ -44,29 +47,39 @@ def pause_count():
 
 
 # starts counting loop
+# def start():
+    # global session
+    # global short_break
+    # global sess_counter
+    # global long_break
+    # global test
+    # global finish
+
+    # sess_counter += 1
+    # start_btn.configure(command=tk.DISABLED)
+    # count(test)
+    # if sess_counter % 4 == 0 and finish:
+        # res = alert()
+        # if res == "yes":
+            # count(long_break)
+        # else:
+            # stop_count()
+    # elif sess_counter % 4 != 0 and finish:
+        # res = alert()
+        # if res == "yes":
+            # count(short_break)
+        # else:
+            # stop_count()
+
 def start():
-    global session
-    global short_break
-    global sess_counter
-    global long_break
     global test
-    global finish
 
     sess_counter += 1
     start_btn.configure(command=tk.DISABLED)
-    count(test)
-    if sess_counter % 4 == 0 and finish:
-        res = alert()
-        if res == "yes":
-            count(long_break)
-        else:
-            stop_count()
-    elif sess_counter % 4 != 0 and finish:
-        res = alert()
-        if res == "yes":
-            count(short_break)
-        else:
-            stop_count()
+
+
+
+
 
 # root & title
 root = tk.Tk()
