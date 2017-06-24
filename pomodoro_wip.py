@@ -8,22 +8,22 @@ from tkinter import messagebox
 # ~Functions~
 # basic countdown function
 def count(timer):
-    global finish
+    global FINISH
     global job
 
     if timer <= -1:
-        finish = True
+        FINISH = True
         return
 
     m, s = divmod(timer, 60)
     time_label.configure(text='{:02d}:{:02d}'.format(m, s))
-    cnt_label.configure(text='Streak: {}'.format(sess_counter))
+    cnt_label.configure(text='Streak: {}'.format(SESS_COUNTER))
     job = root.after(1000, count, timer - 1)
 
 
-# activates the prompt messagebox
+# activates the prompt messagebox based on Break or not (still improve TODO)
 def alert():
-    if sess_counter % 4 == 0:
+    if SESS_COUNTER % 4 == 0:
         messagebox.askquestion("Break Done!!", "Ready for a new session")
     else:
         messagebox.askquestion("Time is Up!", "Start Break?")
@@ -31,11 +31,11 @@ def alert():
 
 # stops the countdown and resets the counter
 def stop_count():
-    global sess_counter
+    global SESS_COUNTER
 
     root.after_cancel(job)
     time_label.configure(text='{:02d}:{:02d}'.format(0, 0))
-    sess_counter = 0
+    SESS_COUNTER = 0
     cnt_label.configure(text='Streak: {}'.format(0))
     start_btn.configure(text="Start", command=lambda: start())
 
@@ -48,39 +48,51 @@ def pause_count():
 
 # starts counting loop
 # def start():
-    # global session
-    # global short_break
-    # global sess_counter
-    # global long_break
-    # global test
-    # global finish
+    # global SESSION
+    # global SHORT_BREAK
+    # global SESS_COUNTER
+    # global LONG_BREAK
+    # global TEST
+    # global FINISH
 
-    # sess_counter += 1
+    # SESS_COUNTER += 1
     # start_btn.configure(command=tk.DISABLED)
-    # count(test)
-    # if sess_counter % 4 == 0 and finish:
+    # count(TEST)
+    # if SESS_COUNTER % 4 == 0 and FINISH:
         # res = alert()
         # if res == "yes":
-            # count(long_break)
+            # count(LONG_BREAK)
         # else:
             # stop_count()
-    # elif sess_counter % 4 != 0 and finish:
+    # elif SESS_COUNTER % 4 != 0 and FINISH:
         # res = alert()
         # if res == "yes":
-            # count(short_break)
+            # count(SHORT_BREAK)
         # else:
             # stop_count()
 
 def start():
-    global test
-
-    sess_counter += 1
+    global TEST
+    global SESS_COUNTER
+    SESS_COUNTER += 1
     start_btn.configure(command=tk.DISABLED)
 
 
+# ~VARIABLE DECLARATION~
+# define sessions
+SHORT_BREAK = 5 * 60
+LONG_BREAK = 20 * 60
+SESSION = 25 * 60
+TEST = 2
+
+# status change
+FINISH = False
+
+# session counter
+SESS_COUNTER = 0
 
 
-
+# ~TKINTER SETTINGS~
 # root & title
 root = tk.Tk()
 root.title('Pomodoro')
@@ -110,19 +122,6 @@ placeholder_label.grid(row=1, column=2)
 # counter label
 cnt_label = tk.Label(main_label, text='Streak: 0')
 cnt_label.grid(row=1, column=3, columnspan=1)
-
-# ~Variables definition~
-# define sessions
-short_break = 5 * 60
-long_break = 20 * 60
-session = 25 * 60
-test = 2
-
-# status change
-finish = False
-
-# session counter
-sess_counter = 0
 
 # ~Buttons~
 start_btn = tk.Button(main_label, text="Start", command=lambda: start())
