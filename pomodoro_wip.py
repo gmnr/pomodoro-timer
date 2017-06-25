@@ -1,12 +1,19 @@
 #!/usr/bin/python3
 
+# Pomodoro.py
+# Created by Guido Minieri
+# Date - June 2017
+# My personal take on the most popular productivity tool out there.
 
+
+# Import libraries
 import tkinter as tk
 from tkinter import messagebox
 
 
-# ~Functions~
-# basic countdown function
+# FUNCTIONS
+
+# Countdown
 def count(timer):
     global FINISH
     global job
@@ -78,8 +85,8 @@ def start():
     start_btn.configure(command=tk.DISABLED)
 
 
-# ~VARIABLE DECLARATION~
-# define sessions
+# VARIABLE DECLARATIONS
+# define sessions and breaks
 SHORT_BREAK = 5 * 60
 LONG_BREAK = 20 * 60
 SESSION = 25 * 60
@@ -92,13 +99,15 @@ FINISH = False
 SESS_COUNTER = 0
 
 
-# ~TKINTER SETTINGS~
+# TKINTER SETTINGS
+
 # root & title
 root = tk.Tk()
 root.title('Pomodoro')
 root.geometry('200x60')
 
-# ~Labels~
+
+# labels
 # main label area
 main_label = tk.Frame(root)
 main_label.grid(row=2, column=3, sticky='nesw')
@@ -108,22 +117,25 @@ root.grid_columnconfigure(1, weight=1)
 root.grid_columnconfigure(2, weight=1)
 root.grid_columnconfigure(3, weight=1)
 
-
 # row padding in window
 root.grid_rowconfigure(1, weight=1)
 root.grid_rowconfigure(2, weight=1)
 
+
 # time label
 time_label = tk.Label(main_label, text='00:00')
 time_label.grid(row=1, column=1, columnspan=1)
+
 # placehodler label
 placeholder_label = tk.Label(main_label, text=' ~ ')
 placeholder_label.grid(row=1, column=2)
+
 # counter label
 cnt_label = tk.Label(main_label, text='Streak: 0')
 cnt_label.grid(row=1, column=3, columnspan=1)
 
-# ~Buttons~
+
+# buttons
 start_btn = tk.Button(main_label, text="Start", command=lambda: start())
 start_btn.grid(row=2, column=1)
 pause_btn = tk.Button(main_label, text="Pause", command=lambda: pause_count())
@@ -131,5 +143,6 @@ pause_btn.grid(row=2, column=2)
 stop_btn = tk.Button(main_label, text="Stop", command=lambda: stop_count())
 stop_btn.grid(row=2, column=3)
 
-# ~MainLoop~
+
+# MAINLOOP
 root.mainloop()
