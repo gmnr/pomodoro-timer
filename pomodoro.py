@@ -71,10 +71,17 @@ def stop_count():
 
 # pauses the counter
 def pause_count():
-    root.after_cancel(job)
-    start_btn.configure(text="Cont.", command=tk.DISABLED)
-    root.wait_window()
+    global time_label
 
+    start_btn.configure(text="Cont.", command=continue_count)
+    root.wait_window(time_label)
+
+
+# continue after pause
+def continue_count():
+    global wait
+
+    wait.destroy()
 
 # starts counting loop
 def start():
@@ -135,11 +142,11 @@ cnt_label.grid(row=1, column=3, columnspan=1)
 
 
 # buttons
-start_btn = tk.Button(main_label, text="Start", command=lambda: start())
+start_btn = tk.Button(main_label, text="Start", command=start)
 start_btn.grid(row=2, column=1)
-pause_btn = tk.Button(main_label, text="Pause", command=lambda: pause_count())
+pause_btn = tk.Button(main_label, text="Pause", command=pause_count)
 pause_btn.grid(row=2, column=2)
-stop_btn = tk.Button(main_label, text="Stop", command=lambda: stop_count())
+stop_btn = tk.Button(main_label, text="Stop", command=stop_count)
 stop_btn.grid(row=2, column=3)
 
 
