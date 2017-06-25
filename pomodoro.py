@@ -15,25 +15,38 @@ from tkinter import messagebox
 
 # Countdown
 def count(timer):
-    global FINISH
+    global is_break
     global job
+    global SESS_COUNTER
 
     if timer <= -1:
-        FINISH = True
+
+        # toggle is break
+        is_break = not is_break
+
+
+        prompt_answer = messagebox.askquestion("Done!", "Ready for a new session", icon='question')
+        if prompt_answer == 'yes' and SESS_COUNTER % 4 != 0 and is_break:
+            root.after_cancel(job)
+            count(SHORT_BREAK)
+        elif prompt_answer == 'yes' and SESS_COUNTER % 4 == 0 and is_break:
+            root.after_cancel(job)
+            count(LONG_BREAK)
+        elif prompt_answer == 'no':
+            stop_count()
+        else:
+            SESS_COUNTER += 1
+            count(SESSION)
         return
+
 
     m, s = divmod(timer, 60)
     time_label.configure(text='{:02d}:{:02d}'.format(m, s))
-    cnt_label.configure(text='Streak: {}'.format(SESS_COUNTER))
-    job = root.after(1000, count, timer - 1)
-
-
-# activates the prompt messagebox based on Break or not (still improve TODO)
-def alert():
-    if SESS_COUNTER % 4 == 0:
-        messagebox.askquestion("Break Done!!", "Ready for a new session")
+    if is_break:
+        cnt_label.configure(text='BREAK!')
     else:
-        messagebox.askquestion("Time is Up!", "Start Break?")
+        cnt_label.configure(text='Streak: {}'.format(SESS_COUNTER))
+    job = root.after(1000, count, timer - 1)
 
 
 # stops the countdown and resets the counter
@@ -51,52 +64,31 @@ def stop_count():
 def pause_count():
     root.after_cancel(job)
     start_btn.configure(text="Cont.", command=tk.DISABLED)
+    root.wait_window()
 
 
 # starts counting loop
-# def start():
-    # global SESSION
-    # global SHORT_BREAK
-    # global SESS_COUNTER
-    # global LONG_BREAK
-    # global TEST
-    # global FINISH
-
-    # SESS_COUNTER += 1
-    # start_btn.configure(command=tk.DISABLED)
-    # count(TEST)
-    # if SESS_COUNTER % 4 == 0 and FINISH:
-        # res = alert()
-        # if res == "yes":
-            # count(LONG_BREAK)
-        # else:
-            # stop_count()
-    # elif SESS_COUNTER % 4 != 0 and FINISH:
-        # res = alert()
-        # if res == "yes":
-            # count(SHORT_BREAK)
-        # else:
-            # stop_count()
-
 def start():
-    global TEST
+    global SESSION
+    global SHORT_BREAK
     global SESS_COUNTER
+    global LONG_BREAK
+
     SESS_COUNTER += 1
     start_btn.configure(command=tk.DISABLED)
-
+    count(SESSION)
 
 # VARIABLE DECLARATIONS
 # define sessions and breaks
-SHORT_BREAK = 5 * 60
-LONG_BREAK = 20 * 60
-SESSION = 25 * 60
-TEST = 2
-
-# status change
-FINISH = False
+SHORT_BREAK = 5# * 60  # 5 mins after every pomodoro
+LONG_BREAK = 20# * 60  # 20 mins after 4 pomodori
+SESSION = 25 # * 60  # lenght of a pomodoro session
 
 # session counter
 SESS_COUNTER = 0
+
+# tells the program if the next session is going to be a break or not
+is_break = False
 
 
 # TKINTER SETTINGS
