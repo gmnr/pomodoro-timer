@@ -24,8 +24,16 @@ def count(timer):
         # toggle is break
         is_break = not is_break
 
+        # prompt and start new session
+        if is_break and SESS_COUNTER % 4 != 0:
+            prompt_answer = messagebox.askquestion("Session Ended", "Are you ready for a break?", icon='question')
+        elif is_break and SESS_COUNTER % 4 == 0:
+            prompt_answer = messagebox.askquestion("4 POMODORI", "Are you up for a long break?", icon='question')
+        else:
+            prompt_answer = messagebox.askquestion("Break Ended", "Ready for a new session?", icon='question')
 
-        prompt_answer = messagebox.askquestion("Done!", "Ready for a new session", icon='question')
+
+
         if prompt_answer == 'yes' and SESS_COUNTER % 4 != 0 and is_break:
             root.after_cancel(job)
             count(SHORT_BREAK)
@@ -38,7 +46,6 @@ def count(timer):
             SESS_COUNTER += 1
             count(SESSION)
         return
-
 
     m, s = divmod(timer, 60)
     time_label.configure(text='{:02d}:{:02d}'.format(m, s))
@@ -53,7 +60,6 @@ def count(timer):
 def stop_count():
     global SESS_COUNTER
     global is_break
-
 
     root.after_cancel(job)
     time_label.configure(text='{:02d}:{:02d}'.format(0, 0))
@@ -73,9 +79,7 @@ def pause_count():
 # starts counting loop
 def start():
     global SESSION
-    global SHORT_BREAK
     global SESS_COUNTER
-    global LONG_BREAK
 
     SESS_COUNTER += 1
     start_btn.configure(command=tk.DISABLED)
@@ -85,7 +89,7 @@ def start():
 # define sessions and breaks
 SHORT_BREAK = 5# * 60  # 5 mins after every pomodoro
 LONG_BREAK = 20# * 60  # 20 mins after 4 pomodori
-SESSION = 25 # * 60  # lenght of a pomodoro session
+SESSION = 25# * 60  # lenght of a pomodoro session
 
 # session counter
 SESS_COUNTER = 0
