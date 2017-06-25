@@ -52,10 +52,13 @@ def count(timer):
 # stops the countdown and resets the counter
 def stop_count():
     global SESS_COUNTER
+    global is_break
+
 
     root.after_cancel(job)
     time_label.configure(text='{:02d}:{:02d}'.format(0, 0))
     SESS_COUNTER = 0
+    is_break = False
     cnt_label.configure(text='Streak: {}'.format(0))
     start_btn.configure(text="Start", command=lambda: start())
 
