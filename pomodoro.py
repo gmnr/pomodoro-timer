@@ -26,11 +26,11 @@ def count(timer):
 
         # prompt and start new session
         if is_break and SESS_COUNTER % 4 != 0:
-            prompt_answer = messagebox.askquestion("Session Ended", "Are you ready for a break?", icon='question')
+            prompt_answer = messagebox.askquestion("Session Ended!", "Are you ready for a break?", icon='question')
         elif is_break and SESS_COUNTER % 4 == 0:
-            prompt_answer = messagebox.askquestion("4 POMODORI", "Are you up for a long break?", icon='question')
+            prompt_answer = messagebox.askquestion("4 POMODORI!", "Do you think you deserve a very long break", icon='question')
         else:
-            prompt_answer = messagebox.askquestion("Break Ended", "Ready for a new session?", icon='question')
+            prompt_answer = messagebox.askquestion("Time's up!", "Ready for a new session?", icon='question')
 
 
 
