@@ -12,7 +12,6 @@ from tkinter import messagebox
 
 
 # FUNCTIONS
-
 # Countdown
 def count(timer):
     global is_break
@@ -26,21 +25,28 @@ def count(timer):
 
         # prompt and start new session
         if is_break and SESS_COUNTER % 4 != 0:
-            prompt_answer = messagebox.askquestion("Session Ended!", "Are you ready for a break?", icon='question')
+            prompt_answer = messagebox.askquestion(
+                "Session Ended!", "Are you ready for a break?", icon="question"
+            )
         elif is_break and SESS_COUNTER % 4 == 0:
-            prompt_answer = messagebox.askquestion("4 POMODORI!", "Do you think you deserve a very long break", icon='question')
+            prompt_answer = messagebox.askquestion(
+                "4 POMODORI!",
+                "Do you think you deserve a very long break",
+                icon="question",
+            )
         else:
-            prompt_answer = messagebox.askquestion("Time's up!", "Ready for a new session?", icon='question')
-
+            prompt_answer = messagebox.askquestion(
+                "Time's up!", "Ready for a new session?", icon="question"
+            )
 
         # prompts and restart cycle
-        if prompt_answer == 'yes' and SESS_COUNTER % 4 != 0 and is_break:
+        if prompt_answer == "yes" and SESS_COUNTER % 4 != 0 and is_break:
             root.after_cancel(job)
             count(SHORT_BREAK)
-        elif prompt_answer == 'yes' and SESS_COUNTER % 4 == 0 and is_break:
+        elif prompt_answer == "yes" and SESS_COUNTER % 4 == 0 and is_break:
             root.after_cancel(job)
             count(LONG_BREAK)
-        elif prompt_answer == 'no':
+        elif prompt_answer == "no":
             stop_count()
         else:
             SESS_COUNTER += 1
@@ -48,11 +54,11 @@ def count(timer):
         return
 
     m, s = divmod(timer, 60)
-    time_label.configure(text='{:02d}:{:02d}'.format(m, s))
+    time_label.configure(text="{:02d}:{:02d}".format(m, s))
     if is_break:
-        cnt_label.configure(text='BREAK!')
+        cnt_label.configure(text="BREAK!")
     else:
-        cnt_label.configure(text='Streak: {}'.format(SESS_COUNTER))
+        cnt_label.configure(text="Streak: {}".format(SESS_COUNTER))
     job = root.after(1000, count, timer - 1)
 
 
@@ -62,10 +68,10 @@ def stop_count():
     global is_break
 
     root.after_cancel(job)
-    time_label.configure(text='{:02d}:{:02d}'.format(0, 0))
+    time_label.configure(text="{:02d}:{:02d}".format(0, 0))
     SESS_COUNTER = 0
     is_break = False
-    cnt_label.configure(text='Streak: {}'.format(0))
+    cnt_label.configure(text="Streak: {}".format(0))
     start_btn.configure(text="Start", command=lambda: start())
 
 
@@ -77,6 +83,7 @@ def start():
     SESS_COUNTER += 1
     start_btn.configure(command=tk.DISABLED)
     count(SESSION)
+
 
 # VARIABLE DECLARATIONS
 # define sessions and breaks
@@ -95,14 +102,14 @@ is_break = False
 
 # root & title
 root = tk.Tk()
-root.title('Pomo')
-root.geometry('150x60')
+root.title("Pomo")
+root.geometry("150x60")
 
 
 # labels
 # main label area
 main_label = tk.Frame(root)
-main_label.grid(row=2, column=3, sticky='nesw')
+main_label.grid(row=2, column=3, sticky="nesw")
 
 # column padding in window
 root.grid_columnconfigure(1, weight=1)
@@ -115,15 +122,15 @@ root.grid_rowconfigure(2, weight=1)
 
 
 # time label
-time_label = tk.Label(main_label, text='00:00')
+time_label = tk.Label(main_label, text="00:00")
 time_label.grid(row=1, column=1, columnspan=1)
 
 # placehodler label
-placeholder_label = tk.Label(main_label, text=' ~ ')
+placeholder_label = tk.Label(main_label, text=" ~ ")
 placeholder_label.grid(row=1, column=2)
 
 # counter label
-cnt_label = tk.Label(main_label, text='Streak: 0')
+cnt_label = tk.Label(main_label, text="Streak: 0")
 cnt_label.grid(row=1, column=3, columnspan=1)
 
 
