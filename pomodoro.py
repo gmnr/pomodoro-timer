@@ -62,11 +62,16 @@ def stop_count():
     global is_break
 
     root.after_cancel(job)
-    time_label.configure(text='{:02d}:{:02d}'.format(0, 0))
+    time_label.configure(text="{:02d}:{:02d}".format(0, 0))
     SESS_COUNTER = 0
     is_break = False
-    cnt_label.configure(text='Streak: {}'.format(0))
+    cnt_label.configure(text="Streak: {}".format(0))
     start_btn.configure(text="Start", command=lambda: start())
+
+
+# continue after pause
+def continue_count():
+    global wait
 
 
 # pauses the counter
@@ -76,12 +81,8 @@ def pause_count():
     start_btn.configure(text="Cont.", command=continue_count)
     root.wait_window(time_label)
 
-
-# continue after pause
-def continue_count():
-    global wait
-
     wait.destroy()
+
 
 # starts counting loop
 def start():
